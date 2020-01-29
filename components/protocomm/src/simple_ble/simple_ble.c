@@ -23,7 +23,7 @@
 
 #include "simple_ble.h"
 
-#define SIMPLE_BLE_MAX_GATT_TABLE_SIZE  20
+#define SIMPLE_BLE_MAX_GATT_TABLE_SIZE  30
 
 static const char *TAG = "simple_ble";
 
