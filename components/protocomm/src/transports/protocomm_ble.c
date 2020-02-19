@@ -23,6 +23,8 @@
 #include "protocomm_priv.h"
 #include "simple_ble.h"
 
+#include "esp_wifi.h"
+
 #define CHAR_VAL_LEN_MAX         (256 + 1)
 #define PREPARE_BUF_MAX_SIZE     CHAR_VAL_LEN_MAX
 
@@ -307,6 +309,7 @@ static void transport_simple_ble_disconnect(esp_gatts_cb_event_t event, esp_gatt
 
 static void transport_simple_ble_connect(esp_gatts_cb_event_t event, esp_gatt_if_t gatts_if, esp_ble_gatts_cb_param_t *param)
 {
+    esp_wifi_disconnect();
     esp_err_t ret;
     ESP_LOGD(TAG, "Inside BLE connect w/ conn_id - %d", param->connect.conn_id);
     if (protoble_internal->pc_ble->sec &&
