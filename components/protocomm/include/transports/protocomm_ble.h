@@ -17,6 +17,7 @@
 #include <esp_gap_ble_api.h>
 
 #include <protocomm.h>
+#include "../../src/simple_ble/simple_ble.h"
 
 #ifdef __cplusplus
 extern "C" {

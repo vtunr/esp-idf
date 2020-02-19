@@ -25,6 +25,9 @@
 #include "sdkconfig.h"
 #include "esp_image_format.h"
 #include "rom/rtc.h"
+#include "soc/dport_access.h"
+#include "soc/periph_defs.h"
+#include "soc/dport_reg.h"
 
 static const char* TAG = "boot";
 

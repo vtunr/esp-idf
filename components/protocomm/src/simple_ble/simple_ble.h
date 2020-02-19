@@ -24,6 +24,7 @@
 
 typedef void (simple_ble_cb_t)(esp_gatts_cb_event_t event, esp_gatt_if_t p_gatts_if, esp_ble_gatts_cb_param_t *param);
 
+void gatts_profile_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_t p_gatts_if, esp_ble_gatts_cb_param_t *param);
 /**
  * This structure is populated with the details required
  * to create an instance of BLE easily. It requires function
