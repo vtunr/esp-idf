@@ -15,7 +15,7 @@
 #pragma once
 
 #include <protocomm.h>
-
+#include "../../src/simple_ble/simple_ble.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
