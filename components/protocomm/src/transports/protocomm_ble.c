@@ -295,7 +295,6 @@ static void transport_simple_ble_exec_write(esp_gatts_cb_event_t event, esp_gatt
 
 static void transport_simple_ble_disconnect(esp_gatts_cb_event_t event, esp_gatt_if_t gatts_if, esp_ble_gatts_cb_param_t *param)
 {
-    esp_wifi_disconnect();
     esp_err_t ret;
     ESP_LOGD(TAG, "Inside disconnect w/ session - %d", param->disconnect.conn_id);
     if (protoble_internal->pc_ble->sec &&
@@ -311,6 +310,7 @@ static void transport_simple_ble_disconnect(esp_gatts_cb_event_t event, esp_gatt
 
 static void transport_simple_ble_connect(esp_gatts_cb_event_t event, esp_gatt_if_t gatts_if, esp_ble_gatts_cb_param_t *param)
 {
+    esp_wifi_disconnect();
     esp_err_t ret;
     ESP_LOGD(TAG, "Inside BLE connect w/ conn_id - %d", param->connect.conn_id);
     if (protoble_internal->pc_ble->sec &&
