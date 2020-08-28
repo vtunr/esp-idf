@@ -103,11 +103,12 @@ esp_err_t esp_bluedroid_disable(void)
         return ESP_FAIL;
     }
 
+    LOG_ERROR("Waiting ...\n");
     if (future_await(*future_p) == FUTURE_FAIL) {
         LOG_ERROR("Bluedroid disable failed\n");
         return ESP_FAIL;
     }
-
+    LOG_ERROR("Waited\n");
     bd_already_enable = false;
 
     return ESP_OK;
