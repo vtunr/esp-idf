@@ -308,8 +308,7 @@ err:
     return ESP_FAIL;
 }
 
-static esp_err_t lan8720_pwrctl(esp_eth_phy_t *phy, bool enable)
-{
+static esp_err_t lan8720_pwrctl(esp_eth_phy_t *phy, bool enable) {
     phy_lan8720_t *lan8720 = __containerof(phy, phy_lan8720_t, parent);
     esp_eth_mediator_t *eth = lan8720->eth;
     bmcr_reg_t bmcr;
@@ -324,12 +323,22 @@ static esp_err_t lan8720_pwrctl(esp_eth_phy_t *phy, bool enable)
     }
     PHY_CHECK(eth->phy_reg_write(eth, lan8720->addr, ETH_PHY_BMCR_REG_ADDR, bmcr.val) == ESP_OK,
               "write BMCR failed", err);
-    PHY_CHECK(eth->phy_reg_read(eth, lan8720->addr, ETH_PHY_BMCR_REG_ADDR, &(bmcr.val)) == ESP_OK,
-              "read BMCR failed", err);
     if (!enable) {
+        PHY_CHECK(eth->phy_reg_read(eth, lan8720->addr, ETH_PHY_BMCR_REG_ADDR, &(bmcr.val)) == ESP_OK,
+                    "read BMCR failed", err);
         PHY_CHECK(bmcr.power_down == 1, "power down failed", err);
     } else {
-        PHY_CHECK(bmcr.power_down == 0, "power up failed", err);
+        /* wait for reset complete */
+        uint32_t to = 0;
+        for (to = 0; to < lan8720->reset_timeout_ms / 10; to++) {
+            vTaskDelay(pdMS_TO_TICKS(10));
+            PHY_CHECK(eth->phy_reg_read(eth, lan8720->addr, ETH_PHY_BMCR_REG_ADDR, &(bmcr.val)) == ESP_OK,
+                    "read BMCR failed", err);
+            if (bmcr.power_down == 0) {
+                break;
+            }
+        }
+        PHY_CHECK(to < lan8720->reset_timeout_ms / 10, "power up failed", err);
     }
     return ESP_OK;
 err:
